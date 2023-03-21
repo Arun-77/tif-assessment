@@ -1,10 +1,33 @@
 import Head from "next/head";
-import { Inter } from "next/font/google";
+import { useEffect } from "react";
 import AssessmentLayout from "@/containers/AssessmentLayout";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export default function Home() {
+  // mouse tracker
+  useEffect(() => {
+    document.documentElement.addEventListener("mouseleave", () =>
+      console.log("out")
+    );
+    document.documentElement.addEventListener("mouseenter", () =>
+      console.log("in")
+    );
+
+    // audio
+    function getLocalStream() {
+      navigator.mediaDevices
+        .getUserMedia({ video: false, audio: true })
+        .then((stream) => {
+          window.localStream = stream; // A
+          window.localAudio.srcObject = stream; // B
+          window.localAudio.autoplay = true; // C
+        })
+        .catch((err) => {
+          console.error(`you got an error: ${err}`);
+        });
+    }
+    getLocalStream();
+  }, []);
+
   return (
     <>
       <Head>
